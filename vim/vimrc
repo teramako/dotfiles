@@ -1,0 +1,99 @@
+set term=xterm-256color
+set encoding=utf8
+set fileencodings=utf8,cp932,sjis,iso-2022-jp
+set fileformats=unix,dos
+set termencoding=utf8
+set number
+set ts=4 sw=0 sts=-1 et
+set nocompatible
+set nobackup
+set noswapfile
+set visualbell
+set cmdheight=2
+set laststatus=2
+set backspace=indent,eol,start
+set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']'.(&bomb?'[BOM]':'').'['.&ff.']['.&filetype.']'}%=%l,%c%V%8P
+
+set clipboard+=unamed
+set showcmd
+set listchars=eol:$,tab:>-
+set autoindent
+set modelines=2
+set expandtab
+
+set t_Co=256
+
+" dont load plugins {{{
+let g:loaded_gzip = 1
+let g:loaded_logiPat = 1
+let g:loaded_man = 1
+let g:loaded_matchparen = 1
+let g:loaded_rrhelper = 1
+let g:loaded_spellfile_plugin = 1
+let g:loaded_tarPlugin = 1
+let g:loaded_vimballPlugin = 1
+let g:loaded_zipPlugin = 1
+let g:loaded_getscriptPlugin = 1
+let g:loaded_getscript = 1
+" }}}
+" Mappings {{{
+let mapleader = ","
+noremap <C-u> <C-u>zz
+noremap <C-b> <C-b>zz
+noremap <C-d> <C-d>zz
+noremap <C-f> <C-f>zz
+nnoremap <C-l> gt
+nnoremap <C-h> gT
+nnoremap <Leader>t :terminal 
+nnoremap q: :q
+nnoremap <C-w>gf gf
+nnoremap <C-w>gF gF
+nnoremap gf <C-w>gf
+nnoremap gF <C-w>gF
+
+inoremap <F1> <C-[>
+inoremap <C-q> <C-[>
+inoremap <C-f> <C-g>U<Right>
+inoremap <C-b> <C-g>U<Left>
+inoremap <C-a> <C-g>U<Home>
+inoremap <C-e> <C-g>U<End>
+" }}}
+
+filetype plugin indent on
+
+autocmd FileType sh,vim,make setlocal noet
+
+" TerminalのNormalモード時に行番号を表示させない
+autocmd TerminalWinOpen * setlocal nonumber
+
+if has('vim_starting')
+    " 挿入モード時に非点滅の縦棒タイプのカーソル
+    " let &t_SI .= "\e[6 q"
+    " ノーマルモード時に非点滅のブロックタイプのカーソル
+    " let &t_EI .= "\e[2 q"
+    " 置換モード時に非点滅の下線タイプのカーソル
+    " let &t_SR .= "\e[4 q"
+endif
+
+if has('clipboard')
+	set clipboard^=unnamedplus
+else
+	augroup Yank
+		au!
+		autocmd TextYankPost * :call system('clip', @")
+	augroup END
+endif
+
+set grepformat^=%f:%l:%c:%m
+set grepprg=git\ grep\ --no-index\ --exclude-standard\ --no-color\ -n\ --column\ -I\ -P
+
+" Grep to quickfix {{{
+" https://zenn.dev/skanehira/articles/2020-09-18-vim-cexpr-quickfix
+" function! s:grep(word, path) abort
+" 	cgetexpr system(printf('grep -n "%s" %s', a:word, a:path)) | cw
+" endfunction
+" 
+" command! -nargs=+ Grep call <SID>grep(<f-args>)
+" }}}
+
+" vim: fdm=marker:

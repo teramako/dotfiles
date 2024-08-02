@@ -1,0 +1,19 @@
+[user]
+	name = teramako
+	email = teramako@gmail.com
+[core]
+	autocrlf = false
+	editor = vim
+[alias]
+	st = status
+	co = checkout
+    current-branch = symbolic-ref --short HEAD
+    logoneline = log --pretty=format:\"%C(yellow)%h%C(reset) %ci %C(blue)%cn%C(reset) %s %C(green)%d%C(reset)\" --graph
+[pull]
+	ff = only
+[init]
+	defaultBranch = master
+[commit]
+	verbose = true
+
+# vim: set ft=gitconfig:
