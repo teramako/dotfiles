@@ -29,6 +29,6 @@ $(HOME)/.% : %
 	@cp -pv $< $@
 
 $(XDG_CONFIG_HOME)/bash/% : %
-	@test -d $(@D) || mkdir $(@D) && \
+	@test -d $(@D) || mkdir -pv $(@D) && \
 		cp -pv $< $@
 

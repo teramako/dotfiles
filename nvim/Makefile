@@ -20,6 +20,6 @@ help: ## Display this help
 install: $(TARGETS) ## Install Neovim config files
 
 $(XDG_CONFIG_HOME)/nvim/% : %
-	@test -d $(@D) || mkdir $(@D) && \
+	@test -d $(@D) || mkdir -pv $(@D) && \
 		cp -pv $< $@
 
