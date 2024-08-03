@@ -2,7 +2,8 @@
 XDG_CONFIG_HOME ?= $(HOME)/.config
 
 SOURCES := \
-	init.lua
+	init.lua \
+	$(wildcard ftplugin/*.lua)
 
 TARGETS := $(addprefix $(XDG_CONFIG_HOME)/nvim/,$(SOURCES))
 
