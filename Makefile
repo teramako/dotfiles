@@ -14,8 +14,6 @@ bash: ## Install bash config files
 
 .PHONY: help
 help: ## Display this help
-	@echo "Target: $@"
+	@echo "Targets:"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' /dev/null $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":|## "}; {printf "  %-20s %s\n", $$(NF-2), $$NF}'
-
-# @grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "%-20s %s\n", $$1, $$2}'
 
