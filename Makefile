@@ -12,6 +12,10 @@ nvim: ## Install Neovim config files
 bash: ## Install bash config files
 	$(MAKE) -C bash install
 
+.PHONY: fish
+fish: ## Install fish config files
+	$(MAKE) -C fish install
+
 .PHONY: help
 help: ## Display this help
 	@echo "Targets:"
