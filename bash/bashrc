@@ -68,8 +68,8 @@ if ! shopt -oq posix; then
   fi
 fi
 
-if [ -d ~/.config/bash ]; then
-    for F in ~/.config/bash/*.bash; do
+if [ -d ~/.config/bash/functions ]; then
+    for F in ~/.config/bash/functions/*.bash; do
         source "$F"
     done
 fi
