@@ -3,7 +3,8 @@ XDG_CONFIG_HOME ?= $(HOME)/.config
 
 SOURCE_FILES := \
 	config.fish \
-	$(wildcard functions/*.fish)
+	$(wildcard functions/*.fish) \
+	$(wildcard completions/*.fish)
 
 SOURCES := $(SOURCE_FILES)
 TARGETS := $(addprefix $(XDG_CONFIG_HOME)/fish/,$(SOURCE_FILES))
