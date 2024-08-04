@@ -1,5 +1,5 @@
 
-ALL_TARGETS: nvim bash fish tmux git
+ALL_TARGETS := nvim bash fish tmux git docker
 
 .PHONY: all
 all: $(ALL_TARGETS) ## Install all
@@ -23,6 +23,10 @@ tmux: ## Install tmux config files
 .PHONY: git
 git: ## Install git config files
 	$(MAKE) -C git install
+
+.PHONY: docker
+docker: ## Install docker config files
+	$(MAKE) -C docker install
 
 .PHONY: help
 help: ## Display this help
