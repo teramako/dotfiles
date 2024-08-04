@@ -28,6 +28,10 @@ git: ## Install git config files
 docker: ## Install docker config files
 	$(MAKE) -C docker install
 
+.PHONY: powershell
+powershell: ## Install powershell config files
+	$(MAKE) -C powershell install
+
 .PHONY: help
 help: ## Display this help
 	@echo "Targets:"
