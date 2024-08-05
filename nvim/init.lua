@@ -81,6 +81,8 @@ vim.keymap.set('n', 'gf', '<C-w>gf', { noremap = true })
 vim.keymap.set('n', 'gF', '<C-w>gF', { noremap = true })
 vim.keymap.set('n', 'q:', ':q', { noremap = true })
 
+-- init.lua をな、いつでも編集できるようになりなよ
+vim.keymap.set('n', '<C-\\><C-\\>',  '<cmd>tabe $MYVIMRC<CR>')
 -- }}}
 
 now(function() vim.cmd('colorscheme minicyan') end)
