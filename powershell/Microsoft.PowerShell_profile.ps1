@@ -9,3 +9,8 @@ Set-PSReadLineKeyHandler -Chord 'Ctrl+o' MenuComplete
 Set-PSReadLineKeyHandler -Chord 'Ctrl+x,Ctrl+o' MenuComplete
 Set-PSReadLineKeyHandler -Chord 'Ctrl+x,Ctrl+]' -Function GotoBrace
 
+# Completion for
+# See: https://github.com/PowerShell/CompletionPredictor
+# Install Install-Module -Name CompletionPredictor -Repository PSGallery
+# Settings: Set-PSReadLineOption -PredctionSource HistoryAndPlugin -PredictionViewStyle ListView
+Import-Module CompletionPredictor
