@@ -524,8 +524,9 @@ vim.api.nvim_create_autocmd('TermEnter', { -- Terminalモード時は行番号�
 vim.api.nvim_create_autocmd('TermLeave', { -- Terminalモードから抜けたら行番号を表示する
     callback = function() vim.opt_local.number = true end
 })
--- <C-q> で Terminalモードから抜ける
+-- <C-q>, <C-]> で Terminalモードから抜ける
 vim.keymap.set('t', '<C-q>', '<C-\\><C-n>', { noremap = true })
+vim.keymap.set('t', '<C-]>', '<C-\\><C-n>', { noremap = true })
 -- }}}
 
 -- vim: set fdm=marker:
