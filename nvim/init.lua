@@ -64,8 +64,18 @@ vim.keymap.set('n', '<C-l>', 'gt', { noremap = true })
 vim.keymap.set('n', '<C-h>', 'gT', { noremap = true })
 
 -- Buffer
-vim.keymap.set('n', ']b', '<cmd>bnext<CR>')
-vim.keymap.set('n', '[b', '<cmd>bprevious<CR>')
+vim.keymap.set('n', ']b', function()
+    return '<cmd>' .. vim.v.count .. 'bnext<CR>'
+end, { expr = true, desc = '次のバッファーへ' })
+vim.keymap.set('n', '[b', function()
+    return '<cmd>' .. vim.v.count .. 'bprevious<CR>'
+end, { expr = true, desc = '前のバッファーへ' })
+vim.keymap.set('n', 'gb', function()
+    local c = vim.v.count; return c ~= 0 and '<cmd>b ' .. c .. '<CR>' or '<cmd>bnext<CR>'
+end, { expr = true, desc = '{count}のバッファー番号へ、もしくは、次のバッファーへ' })
+vim.keymap.set('n', 'gB', function()
+    local c = vim.v.count; return c ~= 0 and '<cmd>b ' .. c .. '<CR>' or '<cmd>bprevious<CR>'
+end, { expr = true, desc = '{count}のバッファー番号へ、もしくは、前のバッファーへ' })
 
 -- Cmdline
 vim.keymap.set('c', '<C-a>', '<Home>', { noremap = true })
