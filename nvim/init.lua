@@ -106,7 +106,7 @@ add({
     --     'nvim-tree/nvim-web-devicons'
     -- }
 })
-now(function()
+later(function()
     require('lualine').setup({
         options = {
             icons_enabled = false,
