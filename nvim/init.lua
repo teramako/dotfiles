@@ -138,6 +138,8 @@ now(function()
                         TelescopePrompt = '🔎 Telescope',
                         ['gin-status'] = ' GitStatus',
                         ['gin-log'] = ' GitLog',
+                        ['gin-branch'] = ' GitBranch',
+                        ['gin-diff'] = ' GitDiff',
                     },
                 }
             },
