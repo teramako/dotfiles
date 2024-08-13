@@ -2,8 +2,14 @@
 # Prompt
 # brew install oh-my-posh
 # (@(& '/home/linuxbrew/.linuxbrew/Cellar/oh-my-posh/23.6.2/bin/oh-my-posh' init pwsh --config='' --print) -join "`n") | Invoke-Expression
-$global:POSH_DIR = "$env:HOMEBREW_PREFIX/Cellar/oh-my-posh/23.6.2"
-oh-my-posh init pwsh --config "$POSH_DIR/themes/avit.omp.json" | Invoke-Expression
+if ($IsWindows) {
+    $global:POSH_DIR = "D:\Program\oh-my-posh"
+    $posh = "${global:POSH_DIR}\bin\oh-my-posh.exe"
+} elseif ($IsLinux) {
+    $global:POSH_DIR = "$env:HOMEBREW_PREFIX/Cellar/oh-my-posh/23.6.2"
+    $posh = "${global:POSH_DIR}/bin/oh-my-posh"
+}
+& $posh init pwsh --config "$POSH_DIR/themes/aliens.omp.json" | Invoke-Expression
 
 Set-PSReadLineOption -EditMode Emacs -BellStyle Visual -PredictionSource HistoryAndPlugin -PredictionViewStyle ListView
 Set-PSReadLineKeyHandler -Chord 'Ctrl+o' MenuComplete
