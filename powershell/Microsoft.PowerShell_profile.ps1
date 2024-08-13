@@ -22,3 +22,8 @@ Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock {
         [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
     }
 }
+
+# git completion
+# Install-Module -Name posh-git -Repository PSGallery
+Import-Module posh-git
+
