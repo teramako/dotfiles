@@ -1,4 +1,6 @@
 
+# Prompt
+# brew install oh-my-posh
 # (@(& '/home/linuxbrew/.linuxbrew/Cellar/oh-my-posh/23.6.2/bin/oh-my-posh' init pwsh --config='' --print) -join "`n") | Invoke-Expression
 $global:POSH_DIR = "$env:HOMEBREW_PREFIX/Cellar/oh-my-posh/23.6.2"
 oh-my-posh init pwsh --config "$POSH_DIR/themes/avit.omp.json" | Invoke-Expression
@@ -13,6 +15,19 @@ Set-PSReadLineKeyHandler -Chord 'Ctrl+x,Ctrl+]' -Function GotoBrace
 # Install Install-Module -Name CompletionPredictor -Repository PSGallery
 # Settings: Set-PSReadLineOption -PredctionSource HistoryAndPlugin -PredictionViewStyle ListView
 Import-Module CompletionPredictor
+
+## winget completion
+if ($IsWindows) {
+    Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
+        param($wordToComplete, $commandAst, $cursorPosition)
+        [Console]::InputEncoding = [Console]::OutputEncoding = $OutputEncoding = [System.Text.Utf8Encoding]::new()
+        $Local:word = $wordToComplete.Replace('"', '""')
+        $Local:ast = $commandAst.ToString().Replace('"', '""')
+        winget complete --word="$Local:word" --commandline "$Local:ast" --position $cursorPosition | ForEach-Object {
+            [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
+        }
+    }
+}
 
 ## dotnet completion
 Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock {
