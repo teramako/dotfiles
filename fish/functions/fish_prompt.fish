@@ -34,7 +34,7 @@ function fish_prompt --description 'Write out the prompt'
         @ (set_color $color_host) (prompt_hostname) $normal \
         ' ' (set_color $color_cwd) (prompt_pwd) $normal \
         $virtualenv $normal \
-        (fish_vcs_prompt) $normal \
+        (fish_vcs_prompt " %s") $normal \
         $prompt_status \
         $suffix " "
 end
