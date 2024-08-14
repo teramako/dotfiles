@@ -1,10 +1,9 @@
 # git
-SOURCE_DOT_FILES := gitconfig
+XDG_CONFIG_HOME ?= $(HOME)/.config
+SOURCES:= \
+	config
 
-TARGET_DOT_FILES := $(addprefix $(HOME)/.,$(SOURCE_DOT_FILES))
-
-SOURCES := $(SOURCE_DOT_FILES)
-TARGETS := $(TARGET_DOT_FILES)
+TARGETS := $(addprefix $(XDG_CONFIG_HOME)/git/,$(SOURCES))
 
 .PHONY: help
 help: ## Display this help
@@ -18,6 +17,7 @@ help: ## Display this help
 .PHONY: install
 install: $(TARGETS) ## Install bash config files
 
-$(HOME)/.% : %
-	@cp -pv $< $@
+$(XDG_CONFIG_HOME)/git/% : %
+	@test -d $(@D) || mkdir -pv $(@D) && \
+		cp -pv $< $@
 
