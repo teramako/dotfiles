@@ -1,7 +1,8 @@
 # git
 XDG_CONFIG_HOME ?= $(HOME)/.config
 SOURCES:= \
-	config
+	config \
+	ignore
 
 TARGETS := $(addprefix $(XDG_CONFIG_HOME)/git/,$(SOURCES))
 
