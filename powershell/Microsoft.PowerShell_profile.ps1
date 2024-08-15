@@ -18,6 +18,9 @@ Set-PSReadLineKeyHandler -Chord 'Ctrl+x,Ctrl+]' -Function GotoBrace
 
 ## don't exit
 Set-PSReadLineKeyhandler -Chord Ctrl+d -Function DeleteChar
+## swap Ctrl+w , Alt+Backspace
+Set-PsReadLineKeyhandler -Chord Ctrl+w -Function BackwardDeleteWord
+Set-PsReadLineKeyhandler -Chord Alt+Backspace -Function UnixWordRubout
 
 # Completion for
 # See: https://github.com/PowerShell/CompletionPredictor
