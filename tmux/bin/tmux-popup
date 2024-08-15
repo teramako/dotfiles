@@ -1,0 +1,88 @@
+#!/bin/bash
+set -euo pipefail
+if [[ -z "$TMUX" ]]; then
+	return 1
+fi
+popup_session=popup
+current_session="$(tmux display-message -p "#{session_name}")"
+resize=0
+
+#
+# Options:
+#  -w : width
+#		%で指定可能
+#  -h : height
+#		%で指定可能
+#  -x : Window位置(x軸)
+#		C: 中央
+#		R: 右側
+#		P: パネルの左端
+#		W: Windowステータスラインの位置
+#  -y : Window位置(y軸)
+#		C: 中央
+#		P: パネルの下側
+#		W: Windowステータスラインの位置
+#		S: ステータスラインの上または下
+#
+while getopts :w:h:x:y:s OPT
+do
+	case "${OPT}" in
+		w) width="${OPTARG}"
+			resize=1
+			;;
+		h) height="${OPTARG}"
+			resize=1
+			;;
+		x) pos_x="${OPTARG}"
+			reisze=1
+			;;
+		y) pos_y="${OPTARG}"
+			resize=1
+			;;
+		s) popup_session="${OPTARG}";;
+	esac
+done
+shift $(( OPTIND - 1 ))
+
+POPUP_ARGV="-w${width:-80%} -h${height:-80%} -x${pos_x:-C} -y${pos_y:-C}"
+
+is_session_exists=0
+sessions=$(tmux list-sessions -F "#S")
+for s_name in $sessions; do
+	if [[ "${s_name}" = "${popup_session}" ]]; then
+		is_session_exists=1
+	fi
+done
+
+if [[ "${current_session}" = "${popup_session}" ]]; then
+	tmux detach-client
+elif (( $# > 0 )); then
+	# 他のコマンドが指定されていたら、単純なコマンド実行のポップアップ
+	tmux popup \
+		-d "#{pane_current_path}" \
+		${POPUP_ARGV}  \
+		-T "$* [#{pane_current_path}]" \
+		-- "$@"
+elif [[ $is_session_exists = 1 ]]; then
+	# 既に対象セッションが存在する場合
+	if [ "$resize" = 1 ]; then
+		# 幅、高さ、位置が指定されていたら、対象セッションの環境変数に幅、高さ、位置の引数を設置
+		tmux set-environment -t "${popup_session}" TMUX_POPUP_ARGV "${POPUP_ARGV}"
+		tmux popup ${POPUP_ARGV} -E "tmux attach-session -t '${popup_session}'"
+	else
+		# 前回のポップアップの幅、高さ、位置で復元する
+		TARGET_POPUP_ARGV="$(tmux show-environment -t "${popup_session}" TMUX_POPUP_ARGV 2>/dev/null|| :)"
+		TARGET_POPUP_ARGV="${TARGET_POPUP_ARGV##*=}"
+		POPUP_ARGV="${TARGET_POPUP_ARGV:-${POPUP_ARGV}}"
+		tmux popup ${POPUP_ARGV} -E "tmux attach-session -t '${popup_session}'"
+	fi
+else
+	# 新規セッション
+	# 環境変数:
+	#   TMUX_POPUP     : ポップアップセッションであることを示す
+	#   TMUX_POPUP_ARGV: ポップアップに使用した引数 (w幅、h高さ、x,y位置)
+	tmux popup \
+		-d "#{pane_current_path}" \
+		${POPUP_ARGV} \
+		-E "tmux new -A -s '${popup_session}' -e TMUX_POPUP=1 -e TMUX_POPUP_ARGV='${POPUP_ARGV}'"
+fi

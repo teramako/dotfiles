@@ -2,8 +2,11 @@
 SOURCE_DOT_FILES := tmux.conf
 TARGET_DOT_FILES := $(addprefix $(HOME)/.,$(SOURCE_DOT_FILES))
 
-SOURCES := $(SOURCE_DOT_FILES)
-TARGETS := $(TARGET_DOT_FILES)
+SOURCE_BIN_FILES := $(wildcard bin/*)
+TARGET_BIN_FILES := $(addprefix $(HOME)/,$(SOURCE_BIN_FILES))
+
+SOURCES := $(SOURCE_DOT_FILES) $(SOURCE_BIN_FILES)
+TARGETS := $(TARGET_DOT_FILES) $(TARGET_BIN_FILES)
 
 .PHONY: help
 help: ## Display this help
@@ -19,4 +22,8 @@ install: $(TARGETS) ## Install bash config files
 
 $(HOME)/.% : %
 	@cp -pv $< $@
+
+$(HOME)/bin/% : bin/%
+	@test -d $(@D) || mkdir -pv $(@D) && \
+		cp -pv $< $@
 
