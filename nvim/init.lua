@@ -292,15 +292,19 @@ later(function()
         depends = { 'vim-denops/denops.vim' },
     })
     -- nvim 起動時に :GinStatus を実行する {{{
-    -- vim.api.nvim_create_autocmd('User', {
-    --     pattern = 'DenopsPluginPost:gin',
-    --     callback = function()
-    --         vim.schedule(function()
-    --             vim.fn.execute('GinStatus')
-    --         end)
-    --     end,
-    --     once = true,
-    -- })
+    vim.api.nvim_create_autocmd('User', {
+        pattern = 'DenopsPluginPost:gin',
+        callback = function()
+            vim.schedule(function()
+                local buf_name = vim.fn.expand('%')
+                local branch = vim.fn['gin#component#branch#ascii']()
+                if #buf_name == 0 and #branch ~= 0 then
+                    vim.fn.execute('GinStatus')
+                end
+            end)
+        end,
+        once = true,
+    })
     -- }}}
 end)
 -- }}}
