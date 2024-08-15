@@ -16,6 +16,9 @@ Set-PSReadLineKeyHandler -Chord 'Ctrl+o' MenuComplete
 Set-PSReadLineKeyHandler -Chord 'Ctrl+x,Ctrl+o' MenuComplete
 Set-PSReadLineKeyHandler -Chord 'Ctrl+x,Ctrl+]' -Function GotoBrace
 
+## don't exit
+Set-PSReadLineKeyhandler -Chord Ctrl+d -Function DeleteChar
+
 # Completion for
 # See: https://github.com/PowerShell/CompletionPredictor
 # Install Install-Module -Name CompletionPredictor -Repository PSGallery
