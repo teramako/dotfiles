@@ -1,5 +1,5 @@
 
-ALL_TARGETS := nvim bash fish tmux git docker
+ALL_TARGETS := nvim bash fish tmux git docker powershell
 
 .PHONY: all
 all: $(ALL_TARGETS) ## Install all
