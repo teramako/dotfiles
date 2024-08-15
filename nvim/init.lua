@@ -517,6 +517,7 @@ later(function()
         { from = "vims", to = "vimgrep // %" },
         { from = "gd", to = "g//d" },
         { from = "vd", to = "v//d" },
+        { from = "diffsplit", to = "vertical diffsplit" },
         { prepose = "Gin commit", from = "a", to = "--amend" },
         { prepose = "GinLog", from = "s", to = "++opener=split" },
         { prepose = "GinLog", from = "v", to = "++opener=vsplit" },
