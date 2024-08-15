@@ -11,5 +11,9 @@ if status is-interactive
 
     # Prompt color
     set ___fish_git_prompt_color_prefix (set_color yellow)
+
+    if set -q TMUX_POPUP
+        figlet TMUX POPUP
+    end
 end
 
