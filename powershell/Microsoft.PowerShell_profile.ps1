@@ -5,9 +5,11 @@
 if ($IsWindows) {
     $global:POSH_DIR = "D:\Program\oh-my-posh"
     $posh = "${global:POSH_DIR}\bin\oh-my-posh.exe"
+    $env:POSH_THEMES_PATH = "$POSH_DIR\themes"
 } elseif ($IsLinux) {
     $global:POSH_DIR = "$env:HOMEBREW_PREFIX/Cellar/oh-my-posh/23.6.2"
     $posh = "${global:POSH_DIR}/bin/oh-my-posh"
+    $env:POSH_THEMES_PATH = "$POSH_DIR/themes"
 }
 & $posh init pwsh --config "$POSH_DIR/themes/aliens.omp.json" | Invoke-Expression
 
