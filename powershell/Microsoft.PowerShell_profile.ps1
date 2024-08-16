@@ -11,7 +11,20 @@ if ($IsWindows) {
     $posh = "${global:POSH_DIR}/bin/oh-my-posh"
     $env:POSH_THEMES_PATH = "$POSH_DIR/themes"
 }
-& $posh init pwsh --config "$POSH_DIR/themes/aliens.omp.json" | Invoke-Expression
+function Set-PoshTheme {
+    param(
+        [Parameter(Mandatory, Position = 0)]
+        [ArgumentCompleter({
+            param($cmdName, $paramName, [string] $word, $cmdAst, $fakeParams)
+            Get-ChildItem -Path $env:POSH_THEMES_PATH -File -Filter "*.omp.json" |
+                ForEach-Object { $name = $_.BaseName -replace "\.omp"; if ($name.StartsWith($word)) { $name } }
+        })]
+        [string] $Name
+    )
+    $themeFile = Join-Path $env:POSH_THEMES_PATH ("{0}.omp.json" -F $Name)
+    & $posh init pwsh --config "$themeFile" | Invoke-Expression
+}
+Set-PoshTheme -Name spaceship
 
 Set-PSReadLineOption -EditMode Emacs -BellStyle Visual -PredictionSource HistoryAndPlugin -PredictionViewStyle ListView
 Set-PSReadLineKeyHandler -Chord 'Ctrl+o' MenuComplete
