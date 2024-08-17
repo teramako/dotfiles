@@ -400,6 +400,37 @@ later(function()
         }),
         matching = { disallow_symbol_nonprefix_matching = false },
     })
+    -- gin.vim の action: 用補完
+    cmp.register_source('gin-action', {
+        enabled = function() -- filetype がgin-* の時のみ有効に
+            local ft = vim.opt_local.filetype:get()
+            if string.match(ft, '^gin%-') then
+                return true
+            end
+            return false
+        end,
+        complete = function(_, _, callback)
+            local items = {}
+            -- cmap の lhs が '<Plug>(gin-action*)' のものを抽出
+            -- see: https://github.com/lambdalisue/vim-gin/blob/main/denops/gin/action/core.ts#L50-L70
+            for _, nmap in ipairs(vim.api.nvim_buf_get_keymap(0, 'n')) do
+                local action = string.match(nmap.lhs, '<Plug>%(gin%-action%-(%S+)%)')
+                if action then
+                    table.insert(items, { label = action, kind = 1, detail = nmap.lhs .. '\n => ' .. nmap.rhs })
+                end
+            end
+            callback(items)
+        end
+    })
+    cmp.setup.cmdline('@', { -- vim.fn.input() 時の補完
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+            { name = 'gin-action' }
+        }),
+        sorting = {
+            comparators = { cmp.config.compare.sort_text }
+        },
+    })
 end) -- }}}
 ---- ddc {{{
 -- later(function()
