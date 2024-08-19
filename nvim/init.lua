@@ -402,6 +402,9 @@ later(function()
             end
             return false
         end,
+        get_keyword_pattern = function()
+            return '[^[:blank:]]*'
+        end,
         complete = function(_, _, callback)
             local items = {}
             -- nmap の lhs が '<Plug>(gin-action*)' のものを抽出
