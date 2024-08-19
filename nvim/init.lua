@@ -337,9 +337,11 @@ later(function()
             'hrsh7th/cmp-path',
             'hrsh7th/cmp-buffer',
             'hrsh7th/cmp-cmdline',
+            'onsails/lspkind.nvim',
         }
     })
     local cmp = require('cmp')
+    local lspkind = require('lspkind')
     cmp.setup({
         sources = {
             { name = 'nvim_lsp' },
@@ -355,6 +357,26 @@ later(function()
             ['<C-e>'] = cmp.mapping.abort(),
             ['<CR>'] = cmp.mapping.confirm( { select = true } ),
         }),
+        window = {
+            completion = {
+                winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,Search:None',
+                col_offset = -3,
+                side_padding = 0
+            },
+            documentation = {
+                border = 'rounded'
+            }
+        },
+        formatting = {
+            fields = { 'kind', 'abbr', 'menu' },
+            format = function(entry, item)
+                local kind = lspkind.cmp_format({ mode = 'symbol_text', maxwidth = 50 })(entry, item)
+                local strings = vim.split(kind.kind, '%s', { trimempty = true })
+                kind.kind = ' ' .. (strings[1] or '') .. ' '
+                kind.menu = '    (' .. (strings[2] or '') .. ')'
+                return kind
+            end
+        }
     })
     cmp.setup.cmdline({ '/', '?' }, {
         mapping = cmp.mapping.preset.cmdline(),
