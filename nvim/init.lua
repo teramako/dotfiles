@@ -408,6 +408,10 @@ later(function()
         complete = function(_, _, callback)
             local items = {}
             local mapped = {}
+            local line = vim.fn.getline('.')
+            local filetype = vim.api.nvim_get_option_value('filetype', { buf = 0 })
+            local worktree = vim.fn['gin#component#worktree#name']()
+            local branch = vim.fn['gin#component#branch#unicode']()
             -- nmap の lhs が '<Plug>(gin-action*)' のものを抽出
             -- see: https://github.com/lambdalisue/vim-gin/blob/main/denops/gin/action/core.ts#L50-L70
             for _, nmap in ipairs(vim.api.nvim_buf_get_keymap(0, 'n')) do
@@ -423,7 +427,16 @@ later(function()
                         labelDetails = { detail = mapped[action] or '' },
                         kind = 1,
                         sortText = action,
-                        detail = nmap.lhs,
+                        documentation = {
+                            kind = 'markdown',
+                            value = '# (' .. filetype .. ') ' .. action .. '\n\n' ..
+                                    '```yaml\n' ..
+                                    'Target  : "' .. line .. '"\n' ..
+                                    'Action  : "' .. nmap.lhs .. '"\n\n' ..
+                                    'Worktree:  ' .. worktree .. '\n' ..
+                                    'Branch  :  ' .. branch .. '\n' ..
+                                    '```'
+                        },
                         data = { names = vim.split(action, ':') }
                     })
                 end
