@@ -423,24 +423,65 @@ later(function()
                         labelDetails = { detail = mapped[action] or '' },
                         kind = 1,
                         sortText = action,
-                        detail = nmap.lhs
+                        detail = nmap.lhs,
+                        data = { names = vim.split(action, ':') }
                     })
                 end
             end
             callback(items)
         end
     })
+    local gin_action_kinds = {
+        _               = { symbol = ' ' },
+        rm              = { symbol = '🗑️' },
+        add             = { symbol = '🚀' },
+        browse          = { symbol = '🌏' },
+        chaperon        = { symbol = '💥' },
+        choice          = { symbol = '🈁' },
+        delete          = { symbol = '🗑️' },
+        diff            = { symbol = '🔛' },
+        echo            = { symbol = '📣' },
+        edit            = { symbol = '📝' },
+        help            = { symbol = '❓' },
+        log             = { symbol = '📄' },
+        move            = { symbol = '🏃' },
+        new             = { symbol = '🆕' },
+        patch           = { symbol = '🪡' },
+        ['repeat']      = { symbol = '🔁' },
+        reset           = { symbol = '♻️' },
+        restore         = { symbol = '♻️' },
+        stage           = { symbol = '⏩' },
+        stash           = { symbol = '📌' },
+        unstage         = { symbol = '⏪' },
+        yank            = { symbol = '📋' },
+        ['cherry-pick'] = { symbol = '🍒' },
+        fixup           = { symbol = '🆙' },
+        merge           = { symbol = '⚗️' },
+        rebase          = { symbol = '🛠️' },
+        revert          = { symbol = '⏮️' },
+        show            = { symbol = '👀' },
+        switch          = { symbol = '🪵' },
+        tag             = { symbol = '🔖' },
+    }
     cmp.setup.cmdline('@', { -- vim.fn.input() 時の補完
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({
             { name = 'gin-action' }
         }),
+        formatting = {
+            format = function(entry, item)
+                local data = entry:get_completion_item().data
+                local kind = gin_action_kinds[data.names[1]]
+                item.kind = kind and kind.symbol or gin_action_kinds._.symbol
+                return item
+            end
+        },
         sorting = {
             comparators = { cmp.config.compare.sort_text }
         },
         window = {
             completion = {
-                col_offset = 8, -- "action: " の8文字分
+                col_offset = 6, -- "action: " の8文字分 - アイコン2文字
             },
         },
     })
