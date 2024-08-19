@@ -373,7 +373,7 @@ later(function()
     })
     -- gin.vim の action: 用補完
     cmp.register_source('gin-action', {
-        enabled = function() -- filetype がgin-* の時のみ有効に
+        is_available = function() -- filetype がgin-* の時のみ有効に
             local ft = vim.opt_local.filetype:get()
             if string.match(ft, '^gin%-') then
                 return true
