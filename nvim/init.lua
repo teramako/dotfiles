@@ -407,12 +407,24 @@ later(function()
         end,
         complete = function(_, _, callback)
             local items = {}
+            local mapped = {}
             -- nmap の lhs が '<Plug>(gin-action*)' のものを抽出
             -- see: https://github.com/lambdalisue/vim-gin/blob/main/denops/gin/action/core.ts#L50-L70
             for _, nmap in ipairs(vim.api.nvim_buf_get_keymap(0, 'n')) do
+                local mappedAction = string.match(nmap.rhs, '<Plug>%(gin%-action%-(%S+)%)')
                 local action = string.match(nmap.lhs, '<Plug>%(gin%-action%-(%S+)%)')
-                if action then
-                    table.insert(items, { label = action, kind = 1, sortText = action, detail = nmap.lhs })
+                if mappedAction then
+                    if not action then
+                        mapped[mappedAction] = nmap.lhs
+                    end
+                elseif action then
+                    table.insert(items, {
+                        label = action,
+                        labelDetails = { detail = mapped[action] or '' },
+                        kind = 1,
+                        sortText = action,
+                        detail = nmap.lhs
+                    })
                 end
             end
             callback(items)
