@@ -95,7 +95,13 @@ vim.keymap.set('n', 'q:', ':q', { noremap = true })
 vim.keymap.set('n', '<C-\\><C-\\>',  '<cmd>tabe $MYVIMRC<CR>')
 -- }}}
 
-now(function() vim.cmd('colorscheme minicyan') end)
+-- ColorScheme {{{
+-- now(function() vim.cmd('colorscheme minicyan') end)
+add({ source = 'Mofiqul/dracula.nvim' })
+later(function()
+    vim.cmd('colorscheme dracula')
+end)
+-- }}}
 
 -- Statusline, Tabline, Winbar {{{
 add({
