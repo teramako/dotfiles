@@ -411,11 +411,20 @@ later(function()
         get_keyword_pattern = function()
             return '[^[:blank:]]*'
         end,
-        complete = function(_, _, callback)
+        ---@param params cmp.SourceConfigEx
+        ---@param callback fun(response: lsp.CompletionList|lsp.CompletionItem[]|nil)
+        complete = function(self, params, callback)
+            local filetype = params.context.filetype
+            if not string.match(filetype, '^gin%-') then
+                return callback()
+            end
+            local completion_type = vim.fn.getcmdcompltype()
+            if not string.match(completion_type, '^customlist,') then
+                return callback()
+            end
             local items = {}
             local mapped = {}
-            local line = vim.fn.getline('.')
-            local filetype = vim.api.nvim_get_option_value('filetype', { buf = 0 })
+            local line = params.context.cursor_line
             local worktree = vim.fn['gin#component#worktree#name']()
             local branch = vim.fn['gin#component#branch#unicode']()
             -- nmap の lhs が '<Plug>(gin-action*)' のものを抽出
