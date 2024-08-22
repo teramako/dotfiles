@@ -344,6 +344,7 @@ later(function()
             'hrsh7th/cmp-buffer',
             'hrsh7th/cmp-cmdline',
             'onsails/lspkind.nvim',
+            'teramako/cmp-cmdline-prompt.nvim',
         }
     })
     local cmp = require('cmp')
@@ -491,17 +492,39 @@ later(function()
         switch          = { symbol = '🪵' },
         tag             = { symbol = '🔖' },
     }
+    -- See: cmp.lsp.CompletionItemKind
+    -- See: :help getcmdtype()
     cmp.setup.cmdline('@', { -- vim.fn.input() 時の補完
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({
+            {
+                name = 'cmdline-prompt',
+                ---@type prompt.Option
+                option = {
+                    excludes = { 'customlist' },
+                }
+            },
             { name = 'gin-action' }
         }),
         formatting = {
-            format = function(entry, item)
-                local data = entry:get_completion_item().data
-                local kind = gin_action_kinds[data.names[1]]
-                item.kind = kind and kind.symbol or gin_action_kinds._.symbol
-                return item
+            fields = { 'kind', 'abbr', 'menu' },
+            format = function(entry, vim_item)
+                local item = entry:get_completion_item()
+                if entry.source.name == 'cmdline-prompt' then
+                    vim_item.kind = cmp.lsp.CompletionItemKind[item.kind]
+                    local kind = lspkind.cmp_format({ mode = 'symbol_text' })(entry, vim_item)
+                    local strings = vim.split(kind.kind, '%s', { trimempty = true })
+                    kind.kind = ' ' .. (strings[1] or '')
+                    kind.menu = ' (' .. (item.data.completion_type or '') .. ')'
+                    kind.menu_hl_group = kind.kind_hl_group
+                    return kind
+                elseif entry.source.name == 'gin-action' then
+                    local kind = gin_action_kinds[item.data.names[1]]
+                    vim_item.kind = kind and kind.symbol or gin_action_kinds._.symbol
+                    return vim_item
+                else
+                    return vim_item
+                end
             end
         },
         sorting = {
