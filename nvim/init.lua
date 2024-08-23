@@ -344,6 +344,7 @@ later(function()
             'hrsh7th/cmp-path',
             'hrsh7th/cmp-buffer',
             'hrsh7th/cmp-cmdline',
+            'hrsh7th/cmp-nvim-lsp-signature-help',
             'onsails/lspkind.nvim',
             'teramako/cmp-cmdline-prompt.nvim',
         }
@@ -353,6 +354,7 @@ later(function()
     cmp.setup({
         sources = {
             { name = 'nvim_lsp' },
+            { name = 'nvim_lsp_signature_help' },
             { name = 'buffer' },
             { name = 'path' },
         },
