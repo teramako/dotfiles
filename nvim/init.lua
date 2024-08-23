@@ -326,6 +326,7 @@ later(function()
             -- 空バッファだとUser GinComponentPost イベントが発行されない！？ので無理やり更新させる
             -- (遅延ロードさせているのが原因かも)
             vim.fn["gin#internal#component#update"]('component:worktree:name')
+            vim.fn["gin#internal#component#update"]('component:branch:unicode')
         end,
         once = true,
     })
