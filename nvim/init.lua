@@ -196,6 +196,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     desc = "Attach key mappings for LSP functionalities",
     callback = function()
         vim.keymap.set('n', 'K',  '<cmd>:lua vim.lsp.buf.hover()<CR>') -- カーソル下のドキュメント等を表示
+        vim.keymap.set({ 'n', 'i' }, '<C-k>',  '<cmd>:lua vim.lsp.buf.signature_help()<CR>') -- シグニチャーヘルプ(関数の引数情報など)を表示
         -- vim.keymap.set('n', 'gf', '<cmd>:lua vim.lsp.buf.formatting()<CR>')
         vim.keymap.set('n', 'gr', '<cmd>:lua vim.lsp.buf.references()<CR>') -- カーソル下の symbol の参照箇所の一覧表示(QuickFix), ジャンプ
         vim.keymap.set('n', 'gd', '<cmd>:lua vim.lsp.buf.definition()<CR>') -- カーソル下の symbol の定義箇所へジャンプ
