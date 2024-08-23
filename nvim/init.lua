@@ -347,6 +347,7 @@ later(function()
             'hrsh7th/cmp-nvim-lsp-signature-help',
             'onsails/lspkind.nvim',
             'teramako/cmp-cmdline-prompt.nvim',
+            'Dynge/gitmoji.nvim',
         }
     })
     local cmp = require('cmp')
@@ -386,6 +387,13 @@ later(function()
                 kind.menu = '    (' .. (strings[2] or '') .. ')'
                 return kind
             end
+        }
+    })
+    require('gitmoji').setup({ completion = { complete_as = 'emoji' } })
+    cmp.setup.filetype('gitcommit', {
+        sources = {
+            { name = 'gitmoji' },
+            { name = 'buffer' },
         }
     })
     cmp.setup.cmdline({ '/', '?' }, {
