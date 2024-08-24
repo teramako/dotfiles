@@ -64,7 +64,7 @@ source.complete = function(self, params, callback)
     end
     local items = {}
     local mapped = {}
-    local line = params.context.cursor_line
+    local line = vim.fn.getline('.')
     local worktree = vim.fn['gin#component#worktree#name']()
     local branch = vim.fn['gin#component#branch#unicode']()
     -- nmap の lhs が '<Plug>(gin-action*)' のものを抽出
