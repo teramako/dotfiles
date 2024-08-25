@@ -95,6 +95,16 @@ vim.keymap.set('n', 'q:', ':q', { noremap = true })
 vim.keymap.set('n', '<C-\\><C-\\>',  '<cmd>tabe $MYVIMRC<CR>')
 -- }}}
 
+-- TreeSitter {{{
+add({ source = 'nvim-treesitter/nvim-treesitter' })
+later(function()
+    require('nvim-treesitter.configs').setup({
+        highlight = { enable = true, },
+        indent = { enable = true },
+    })
+end)
+-- }}}
+
 -- ColorScheme {{{
 -- now(function() vim.cmd('colorscheme minicyan') end)
 add({ source = 'Mofiqul/dracula.nvim' })
