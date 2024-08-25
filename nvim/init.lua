@@ -363,9 +363,9 @@ later(function()
             'hrsh7th/cmp-buffer',
             'hrsh7th/cmp-cmdline',
             'hrsh7th/cmp-nvim-lsp-signature-help',
+            'hrsh7th/cmp-emoji',
             'onsails/lspkind.nvim',
             'teramako/cmp-cmdline-prompt.nvim',
-            'Dynge/gitmoji.nvim',
         }
     })
     local cmp = require('cmp')
@@ -376,6 +376,7 @@ later(function()
             { name = 'nvim_lsp_signature_help' },
             { name = 'buffer' },
             { name = 'path' },
+            { name = 'emoji' },
         },
         mapping = cmp.mapping.preset.insert({
             ['<C-d>'] = cmp.mapping.scroll_docs(-4),
@@ -410,7 +411,7 @@ later(function()
     require('gitmoji').setup({ completion = { complete_as = 'emoji' } })
     cmp.setup.filetype('gitcommit', {
         sources = {
-            { name = 'gitmoji' },
+            { name = 'emoji' },
             { name = 'buffer' },
         }
     })
