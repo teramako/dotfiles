@@ -473,28 +473,6 @@ later(function()
         },
     })
 end) -- }}}
----- ddc {{{
--- later(function()
---     add({
---         source = 'Shougo/ddc.vim',
---         depends = {
---             'vim-denops/denops.vim',
---             'Shougo/ddc-ui-native',
---             'Shougo/ddc-source-around',
---             'tani/ddc-fuzzy'
---         }
---     })
---     vim.fn['ddc#custom#patch_global']('ui', 'native')
---     vim.fn['ddc#custom#patch_global']('sources', { 'around' })
---     vim.fn['ddc#custom#patch_global']('sourceOptions', {
---         _ = {
---             matchers = {'matcher_fuzzy'},
---             sorters = {'sorter_fuzzy'},
---             converters = {'converter_fuzzy'}
---         }
---     })
---     vim.fn['ddc#enable']()
--- end) -- }}}
 -- }}}
 
 -- dial {{{
