@@ -314,6 +314,7 @@ later(function()
         source = 'lambdalisue/gin.vim',
         depends = { 'vim-denops/denops.vim' },
     })
+    vim.g.gin_branch_default_args = { '-a' }
     -- nvim 起動時に :GinStatus を実行する {{{
     vim.api.nvim_create_autocmd('User', {
         pattern = 'DenopsPluginPost:gin',
