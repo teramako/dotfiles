@@ -255,7 +255,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
             -- end
         end
         vim.diagnostic.custom_goto = function(name)
-            vim.diagnostic['goto_' .. name]({ float = false })
+            vim.diagnostic['goto_' .. name]({ float = true })
             vim.schedule(function()
                 vim.diagnostic.custom_open_float()
             end)
