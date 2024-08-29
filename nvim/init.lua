@@ -222,6 +222,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.keymap.set('n', 'g]', '<cmd>:lua vim.diagnostic.custom_goto("next")<CR>')
         -- vim.keymap.set('n', 'g[', '<cmd>:lua vim.diagnostic.goto_prev()<CR>')
         vim.keymap.set('n', 'g[', '<cmd>:lua vim.diagnostic.custom_goto("prev")<CR>')
+        vim.keymap.set('n', 'gl', '<cmd>:lua vim.diagnostic.setloclist()<CR>') -- diagnostics を location list に出す
 
         vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
             vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false }
