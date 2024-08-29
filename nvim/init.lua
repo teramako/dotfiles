@@ -314,6 +314,11 @@ later(function()
         source = 'lambdalisue/gin.vim',
         depends = { 'vim-denops/denops.vim' },
     })
+    -- :GinStatus するとDiff Previewが出る拡張
+    add({
+        source = 'ogaken-1/nvim-gin-preview',
+        depends = { 'lambdalisue/gin.vim' }
+    })
     vim.g.gin_branch_default_args = { '-a' }
     -- nvim 起動時に :GinStatus を実行する {{{
     vim.api.nvim_create_autocmd('User', {
