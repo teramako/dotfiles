@@ -216,19 +216,49 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.keymap.set('n', 'gn', '<cmd>:lua vim.lsp.buf.rename()<CR>') -- symbol の一括リネーム
         vim.keymap.set('n', '<F2>', '<cmd>:lua vim.lsp.buf.rename()<CR>') -- 同上
         vim.keymap.set('n', 'ga', '<cmd>:lua vim.lsp.buf.code_action()<CR>')
-        vim.keymap.set('n', 'ge', '<cmd>:lua vim.diagnostic.open_float()<CR>') -- 警告・エラーメッセージの表示
-        vim.keymap.set('n', 'g]', '<cmd>:lua vim.diagnostic.goto_next()<CR>')
-        vim.keymap.set('n', 'g[', '<cmd>:lua vim.diagnostic.goto_prev()<CR>')
+        -- vim.keymap.set('n', 'ge', '<cmd>:lua vim.diagnostic.open_float()<CR>') -- 警告・エラーメッセージの表示
+        vim.keymap.set('n', 'ge', '<cmd>:lua vim.diagnostic.custom_open_float()<CR>') -- 警告・エラーメッセージの表示
+        -- vim.keymap.set('n', 'g]', '<cmd>:lua vim.diagnostic.goto_next()<CR>')
+        vim.keymap.set('n', 'g]', '<cmd>:lua vim.diagnostic.custom_goto("next")<CR>')
+        -- vim.keymap.set('n', 'g[', '<cmd>:lua vim.diagnostic.goto_prev()<CR>')
+        vim.keymap.set('n', 'g[', '<cmd>:lua vim.diagnostic.custom_goto("prev")<CR>')
 
         vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
             vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false }
         )
+
+        -- ウィンドウの透過をしたい場合は以下のようにすると良い
+        -- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+        --     function(...)
+        --         local _, winnr = vim.lsp.handlers.hover(...)
+        --         if winnr then
+        --             vim.api.nvim_set_option_value('winblend', 20, { win = winnr })
+        --         end
+        --     end,
+        --     { border = 'rounded' }
+        -- )
         vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
             vim.lsp.handlers.hover, { border = 'rounded' }
         )
         vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
             vim.lsp.handlers.signature_help, { border = 'single' }
         )
+        -- diagnostic のウィンドウ表示
+        -- border を使えたいので適当に関数を定義する
+        vim.diagnostic.custom_open_float = function()
+            vim.diagnostic.open_float({ border = 'double' })
+            -- 透過したい場合は以下
+            -- local _, winnr = vim.diagnostic.open_float({ border = 'double' })
+            -- if winnr then
+            --     vim.api.nvim_set_option_value('winblend', 40, { win = winnr })
+            -- end
+        end
+        vim.diagnostic.custom_goto = function(name)
+            vim.diagnostic['goto_' .. name]({ float = false })
+            vim.schedule(function()
+                vim.diagnostic.custom_open_float()
+            end)
+        end
     end
 })
 
