@@ -658,4 +658,16 @@ vim.keymap.set('t', '<C-q>', '<C-\\><C-n>', { noremap = true })
 vim.keymap.set('t', '<C-]>', '<C-\\><C-n>', { noremap = true })
 -- }}}
 
+-- DeepL {{{
+add({ source = 'ryicoh/deepl.vim' })
+later(function()
+    require('deepl');
+    vim.cmd([[packadd deepl.nvim]])
+    vim.keymap.set('v', 't<C-j>', '<Cmd>call deepl#v("JA")<CR>', { noremap = true, desc = '選択行を日本語に変換' })
+    vim.keymap.set('v', 't<C-e>', '<Cmd>call deepl#v("EN")<CR>', { noremap = true, desc = '選択行を英語に変換' })
+    vim.keymap.set('n', 't<C-j>', 'yypV<Cmd>call deepl#v("JA")<CR>', { noremap = true, desc = 'カーソル行の下に日本語変換して追加' })
+    vim.keymap.set('n', 't<C-e>', 'yypV<Cmd>call deepl#v("EN")<CR>', { noremap = true, desc = 'カーソル行の下に英語変換して追加' })
+end)
+-- }}}
+
 -- vim: set fdm=marker:
