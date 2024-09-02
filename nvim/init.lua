@@ -444,7 +444,6 @@ later(function()
             end
         }
     })
-    require('gitmoji').setup({ completion = { complete_as = 'emoji' } })
     cmp.setup.filetype('gitcommit', {
         sources = {
             { name = 'emoji' },
