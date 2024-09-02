@@ -351,6 +351,7 @@ later(function()
         depends = { 'lambdalisue/gin.vim' }
     })
     vim.g.gin_branch_persistent_args = { '-a' }
+    vim.g.gin_log_persistent_args = { '++emojify' }
     -- nvim 起動時に :GinStatus を実行する {{{
     vim.api.nvim_create_autocmd('User', {
         pattern = 'DenopsPluginPost:gin',
