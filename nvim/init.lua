@@ -414,7 +414,6 @@ later(function()
             { name = 'nvim_lsp_signature_help' },
             { name = 'buffer' },
             { name = 'path' },
-            { name = 'emoji' },
         },
         mapping = cmp.mapping.preset.insert({
             ['<C-d>'] = cmp.mapping.scroll_docs(-4),
