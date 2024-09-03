@@ -407,6 +407,7 @@ later(function()
     })
     local cmp = require('cmp')
     local lspkind = require('lspkind')
+    lspkind.setup({ preset = 'codicons' })
     cmp.setup({
         sources = {
             { name = 'nvim_lsp' },
