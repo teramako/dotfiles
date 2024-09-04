@@ -300,6 +300,34 @@ now(function()
                 }
             })
         end,
+        -- XML 系のLSP
+        --  * https://github.com/eclipse/lemminx
+        --  * https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md
+        ['lemminx'] = function()
+            local lemminx = require('lspconfig').lemminx
+            lemminx.setup({
+                filetypes = vim.tbl_deep_extend('force', lemminx.document_config.default_config.filetypes, {
+                    'ps1xml',
+                }),
+                settings = {
+                    xml = {
+                        server = {
+                            workDir = '~/.cache/lemminx',
+                        },
+                        fileAssociations = {
+                            {
+                                pattern = '**/*formats.ps1xml',
+                                systemId = 'https://raw.githubusercontent.com/PowerShell/PowerShell/master/src/Schemas/Format.xsd'
+                            },
+                            {
+                                pattern = '**/*types.ps1xml',
+                                systemId = 'https://raw.githubusercontent.com/PowerShell/PowerShell/master/src/Schemas/Format.xsd'
+                            },
+                        }
+                    }
+                },
+            })
+        end,
     })
 end)
 -- }}}
