@@ -338,7 +338,13 @@ end)
 -- sr<char><char>       : Replace surround
 -- sf<char>             : Find surround forward (sF is backward)
 -- sh<char>             : Highlight surround
-later(function() require('mini.surround').setup() end)
+-- later(function() require('mini.surround').setup() end)
+-- }}}
+-- vim-sandwich {{{
+add({ source = 'machakann/vim-sandwich' })
+later(function()
+    vim.cmd([[packadd vim-sandwich]])
+end)
 -- }}}
 
 -- mini.comment {{{
