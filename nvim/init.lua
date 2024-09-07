@@ -286,17 +286,28 @@ now(function()
                         return
                     end
                     client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-                        runtime = { version = 'LuaJIT' },
                         workspace = {
-                            checkThirdParty = false,
                             library = {
-                                vim.env.VIMRUNTIME
+                                vim.env.VIMRUNTIME .. '/lua',
+                                vim.fn.stdpath('config') .. '/lua',
+                                mini_path .. '/lua',
+                                path_package .. '/pack/deps/opt/nvim-cmp/lua',
                             }
                         }
                     })
                 end,
                 settings = {
-                    Lua = {}
+                    Lua = {
+                        runtime = { version = 'LuaJIT', pathStrict = true, path = { '?.lua', '?/init.lua' }, },
+                        workspace = {
+                            checkThirdParty = false,
+                            ignoreDir = { '/locale/', '/libs/', '/3rd', '.vscode', '/meta', '_plugins' }
+                        },
+                        diagnostics = {
+                            disable = { 'missing-fields', 'incomplete-signature-doc' },
+                            unusedLocaleExclude = { '_*' }
+                        },
+                    }
                 }
             })
         end,
