@@ -36,6 +36,7 @@ local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 add({ name = 'mini.nvim', checkout = 'HEAD' })
 
 -- Basic Options {{{
+opt.mouse = '' -- マウス操作を無効化
 opt.number = true
 opt.tabstop = 4
 opt.shiftwidth = 0
