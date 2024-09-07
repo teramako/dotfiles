@@ -472,10 +472,12 @@ later(function()
         window = {
             completion = {
                 winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None',
+                winblend = 20,
                 col_offset = -3,
                 side_padding = 0
             },
             documentation = {
+                winblend = 20,
                 border = 'rounded'
             }
         },
@@ -512,6 +514,9 @@ later(function()
         matching = { disallow_symbol_nonprefix_matching = false },
         formatting = {
             fields = { 'kind', 'abbr' }
+        },
+        window = {
+            completion = { winblend = 10 },
         },
     })
     require('cmp-gin-action')
