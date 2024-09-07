@@ -510,6 +510,9 @@ later(function()
             { name = 'cmdline', option = { ignore_cmds = { 'Man', '!' } } }
         }),
         matching = { disallow_symbol_nonprefix_matching = false },
+        formatting = {
+            fields = { 'kind', 'abbr' }
+        },
     })
     require('cmp-gin-action')
     -- See: cmp.lsp.CompletionItemKind
