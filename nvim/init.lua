@@ -46,7 +46,7 @@ opt.swapfile = false
 opt.visualbell = true
 
 opt.listchars = 'tab:>-,trail:-,nbsp:+,eol:$'
-opt.cmdheight = 2
+opt.cmdheight = 1
 opt.laststatus = 2
 opt.autoindent = true
 
