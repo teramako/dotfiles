@@ -458,7 +458,7 @@ later(function()
         sources = {
             { name = 'nvim_lsp' },
             { name = 'nvim_lsp_signature_help' },
-            { name = 'buffer' },
+            -- { name = 'buffer' },
             { name = 'path' },
         },
         mapping = cmp.mapping.preset.insert({
