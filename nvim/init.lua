@@ -318,9 +318,7 @@ now(function()
         ['lemminx'] = function()
             local lemminx = require('lspconfig').lemminx
             lemminx.setup({
-                filetypes = vim.tbl_deep_extend('force', lemminx.document_config.default_config.filetypes, {
-                    'ps1xml',
-                }),
+                filetypes = vim.list_extend({ 'ps1xml' }, lemminx.document_config.default_config.filetypes),
                 settings = {
                     xml = {
                         server = {
