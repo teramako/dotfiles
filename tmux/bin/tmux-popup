@@ -3,10 +3,17 @@ set -euo pipefail
 if [[ -z "$TMUX" ]]; then
 	return 1
 fi
-popup_session=popup
+popup_session_prefix=popup
 current_session="$(tmux display-message -p "#{session_name}")"
+current_window_index="$(tmux display-message -p "#{window_index}")"
+popup_session="${popup_session_prefix}-${current_session}-${current_window_index}"
 resize=0
 
+# ポップアップのセッション中で起動されたら、デタッチ
+if [[ "${current_session}" = ${popup_session_prefix}* ]]; then
+	tmux detach-client
+	exit
+fi
 #
 # Options:
 #  -w : width
@@ -54,9 +61,7 @@ for s_name in $sessions; do
 	fi
 done
 
-if [[ "${current_session}" = "${popup_session}" ]]; then
-	tmux detach-client
-elif (( $# > 0 )); then
+if (( $# > 0 )); then
 	# 他のコマンドが指定されていたら、単純なコマンド実行のポップアップ
 	tmux popup \
 		-d "#{pane_current_path}" \
