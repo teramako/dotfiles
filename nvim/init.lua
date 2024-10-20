@@ -492,7 +492,7 @@ later(function()
             end
         }
     })
-    cmp.setup.filetype('gitcommit', {
+    cmp.setup.filetype({ 'markdown', 'gitcommit' }, {
         sources = {
             { name = 'emoji' },
             { name = 'buffer' },
