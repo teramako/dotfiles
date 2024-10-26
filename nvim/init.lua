@@ -225,9 +225,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.keymap.set('n', 'g[', '<cmd>:lua vim.diagnostic.custom_goto("prev")<CR>')
         vim.keymap.set('n', 'gl', '<cmd>:lua vim.diagnostic.setloclist()<CR>') -- diagnostics を location list に出す
 
-        vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-            vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false }
-        )
+        vim.diagnostic.config({
+            signs = true,
+            virtual_text = { severity = { min = "WARN" } },
+            severity_sort = true
+        })
+        -- vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
+        --     vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false }
+        -- )
 
         -- ウィンドウの透過をしたい場合は以下のようにすると良い
         -- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
