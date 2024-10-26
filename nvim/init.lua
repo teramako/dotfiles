@@ -739,6 +739,8 @@ later(function()
         { from = "ts", to = "horizontal belowright terminal" },
         { from = "tv", to = "virtical botright terminal" },
         { from = "tt", to = "tab terminal" },
+        { from = "bt", to = "tab sb" },
+        { from = "tb", to = "tab sb" },
         { from = "open", to = "!open" },
         { from = "rg", to = "silent grep" },
         { from = "s", to = "%s///g<Left><Left>", remove_trigger = true },
