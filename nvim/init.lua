@@ -737,7 +737,7 @@ later(function()
         { from = "gd", to = "GinDiff" },
         { from = "git", to = "Gin" },
         { from = "ts", to = "horizontal belowright terminal" },
-        { from = "tv", to = "virtical botright terminal" },
+        { from = "tv", to = "vertical terminal" },
         { from = "tt", to = "tab terminal" },
         { from = "bt", to = "tab sb" },
         { from = "tb", to = "tab sb" },
