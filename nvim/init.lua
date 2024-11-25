@@ -111,6 +111,9 @@ end)
 add({ source = 'Mofiqul/dracula.nvim' })
 later(function()
     vim.cmd('colorscheme dracula')
+    -- NonText        xxx guifg=#3b4048
+    -- Normal         xxx guifg=#f8f8f2 guibg=#282a36
+    vim.cmd[[highlight Normal guibg=None]]
 end)
 -- }}}
 
