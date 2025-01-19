@@ -3,17 +3,55 @@ set -euo pipefail
 if [[ -z "$TMUX" ]]; then
 	return 1
 fi
-popup_session_prefix=popup
+popup_session_prefix=p
 current_session="$(tmux display-message -p "#{session_name}")"
-current_window_index="$(tmux display-message -p "#{window_index}")"
-popup_session="${popup_session_prefix}-${current_session}-${current_window_index}"
+
+is_popup_session() {
+	if [[ "${current_session}" = ${popup_session_prefix}* ]]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+is_popup_session_exists() {
+	local target_session=$1
+	local sessions=$(tmux list-sessions -F "#S")
+	for s_name in $sessions; do
+		if [[ "${s_name}" = "${target_session}" ]]; then
+			return 0
+		fi
+	done
+	return 1
+}
+
+get_root_session_name() {
+	if is_popup_session; then
+		local buf="${current_session#${popup_session_prefix}}"
+		echo "${buf%-*}"
+	else
+		echo "${current_session}"
+	fi
+}
+
+get_root_window_index() {
+	if is_popup_session; then
+		echo "${current_session##*-}"
+	else
+		tmux display-message -p "#{window_index}"
+	fi
+}
+
+get_POPUP_ARGV_env() {
+	local argv="$(tmux show-environment -t "${popup_session}" TMUX_POPUP_ARGV 2>/dev/null|| :)"
+	echo "${argv#*=}"
+}
+
+root_session="$(get_root_session_name)"
+root_window_index="$(get_root_window_index)"
+popup_session="${popup_session_prefix}${root_session}-${root_window_index}"
 resize=0
 
-# ポップアップのセッション中で起動されたら、デタッチ
-if [[ "${current_session}" = ${popup_session_prefix}* ]]; then
-	tmux detach-client
-	exit
-fi
 #
 # Options:
 #  -w : width
@@ -31,7 +69,7 @@ fi
 #		W: Windowステータスラインの位置
 #		S: ステータスラインの上または下
 #
-while getopts :w:h:x:y:s OPT
+while getopts :w:h:x:y:s:P: OPT
 do
 	case "${OPT}" in
 		w) width="${OPTARG}"
@@ -46,20 +84,49 @@ do
 		y) pos_y="${OPTARG}"
 			resize=1
 			;;
-		s) popup_session="${OPTARG}";;
+		s) popup_session="${OPTARG}"
+			;;
+		P)
+			case "${OPTARG}" in
+				center)
+					width=80%
+					height=80%
+					pos_x=C
+					pos_y=C
+					;;
+				top)
+					width=80%
+					height=50%
+					pos_x=C
+					pos_y=1
+					;;
+				bottom)
+					width=80%
+					height=50%
+					pos_x=C
+					pos_y=S
+					;;
+				right)
+					root_width=$(tmux display-message -t "${root_session}" -p '#{window_width}')
+					width=$(( root_width / 2 - 2 ))
+					height=80%
+					pos_x=$(( root_width / 2 + 2 ))
+					pos_y=C
+					;;
+				left)
+					width=50%
+					height=80%
+					pos_x=1
+					pos_y=C
+					;;
+			esac
+			resize=1
+			;;
 	esac
 done
 shift $(( OPTIND - 1 ))
 
 POPUP_ARGV="-w${width:-80%} -h${height:-80%} -x${pos_x:-C} -y${pos_y:-C}"
-
-is_session_exists=0
-sessions=$(tmux list-sessions -F "#S")
-for s_name in $sessions; do
-	if [[ "${s_name}" = "${popup_session}" ]]; then
-		is_session_exists=1
-	fi
-done
 
 if (( $# > 0 )); then
 	# 他のコマンドが指定されていたら、単純なコマンド実行のポップアップ
@@ -68,16 +135,23 @@ if (( $# > 0 )); then
 		${POPUP_ARGV}  \
 		-T "$* [#{pane_current_path}]" \
 		-- "$@"
-elif [[ $is_session_exists = 1 ]]; then
+elif is_popup_session_exists "${popup_session}"; then
 	# 既に対象セッションが存在する場合
+
 	if [ "$resize" = 1 ]; then
+		# ポップアップのセッション中で起動されたら、一旦デタッチしてウィンドウを閉じる
+		if is_popup_session; then
+			tmux detach-client -s "${popup_session}"
+		fi
+
 		# 幅、高さ、位置が指定されていたら、対象セッションの環境変数に幅、高さ、位置の引数を設置
 		tmux set-environment -t "${popup_session}" TMUX_POPUP_ARGV "${POPUP_ARGV}"
 		tmux popup ${POPUP_ARGV} -E "tmux attach-session -t '${popup_session}'"
+	elif is_popup_session; then
+		tmux detach-client
 	else
 		# 前回のポップアップの幅、高さ、位置で復元する
-		TARGET_POPUP_ARGV="$(tmux show-environment -t "${popup_session}" TMUX_POPUP_ARGV 2>/dev/null|| :)"
-		TARGET_POPUP_ARGV="${TARGET_POPUP_ARGV##*=}"
+		TARGET_POPUP_ARGV="$(get_POPUP_ARGV_env)"
 		POPUP_ARGV="${TARGET_POPUP_ARGV:-${POPUP_ARGV}}"
 		tmux popup ${POPUP_ARGV} -E "tmux attach-session -t '${popup_session}'"
 	fi
