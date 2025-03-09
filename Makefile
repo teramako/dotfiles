@@ -32,6 +32,10 @@ docker: ## Install docker config files
 powershell: ## Install powershell config files
 	$(MAKE) -C powershell install
 
+.PHONY: curl
+curl: ## Install curl config files
+	$(MAKE) -C curl install
+
 .PHONY: help
 help: ## Display this help
 	@echo "Targets:"
