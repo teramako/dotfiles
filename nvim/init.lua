@@ -385,7 +385,7 @@ now(function()
                             },
                             {
                                 pattern = '**/*types.ps1xml',
-                                systemId = 'https://raw.githubusercontent.com/PowerShell/PowerShell/master/src/Schemas/Format.xsd'
+                                systemId = 'https://raw.githubusercontent.com/PowerShell/PowerShell/master/src/Schemas/Types.xsd'
                             },
                         }
                     }
