@@ -4,6 +4,9 @@ if status is-interactive
     abbr -a dc docker compose
     abbr -a tp tmux-popup
 
+    abbr -a '-' prevd
+    abbr -a '+' nextd
+
     bind \cg\cf forward-bigword
     bind \cg\cb backward-bigword
 
