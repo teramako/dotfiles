@@ -209,24 +209,51 @@ add({
 vim.api.nvim_create_autocmd("LspAttach", {
     desc = "Attach key mappings for LSP functionalities",
     callback = function()
-        vim.keymap.set('n', 'K',  function() vim.lsp.buf.hover({ border = 'rounded' }) end) -- カーソル下のドキュメント等を表示
-        vim.keymap.set({ 'n', 'i' }, '<C-k>', function() vim.lsp.buf.signature_help({ border = 'rounded' }) end) -- シグニチャーヘルプ(関数の引数情報など)を表示
+        vim.keymap.set('n', 'K', function()
+            vim.lsp.buf.hover({ border = 'rounded' })
+        end, { buffer = true, desc = 'カーソル下のドキュメント等を表示' })
+        vim.keymap.set({ 'n', 'i' }, '<C-k>', function()
+            vim.lsp.buf.signature_help({ border = 'rounded' })
+        end, { buffer = true, desc = 'シグニチャーヘルプ(関数の引数情報など)を表示' })
         -- vim.keymap.set('n', 'gf', '<cmd>:lua vim.lsp.buf.formatting()<CR>')
-        vim.keymap.set('n', 'gr', '<cmd>:lua vim.lsp.buf.references()<CR>') -- カーソル下の symbol の参照箇所の一覧表示(QuickFix), ジャンプ
-        vim.keymap.set('n', 'gd', '<cmd>:lua vim.lsp.buf.definition()<CR>') -- カーソル下の symbol の定義箇所へジャンプ
-        vim.keymap.set('n', 'gD', '<cmd>:lua vim.lsp.buf.declaration()<CR>')
-        vim.keymap.set('n', 'gi', '<cmd>:lua vim.lsp.buf.implementation()<CR>')
-        vim.keymap.set('n', 'gt', '<cmd>:lua vim.lsp.buf.type_definition()<CR>')
-        vim.keymap.set('n', 'gn', '<cmd>:lua vim.lsp.buf.rename()<CR>') -- symbol の一括リネーム
-        vim.keymap.set('n', '<F2>', '<cmd>:lua vim.lsp.buf.rename()<CR>') -- 同上
-        vim.keymap.set('n', 'ga', '<cmd>:lua vim.lsp.buf.code_action()<CR>')
-        -- vim.keymap.set('n', 'ge', '<cmd>:lua vim.diagnostic.open_float()<CR>') -- 警告・エラーメッセージの表示
-        vim.keymap.set('n', 'ge', '<cmd>:lua vim.diagnostic.custom_open_float()<CR>') -- 警告・エラーメッセージの表示
+        vim.keymap.set('n', 'gr', function()
+            vim.lsp.buf.references()
+        end, { buffer = true, desc = 'カーソル下の symbol の参照箇所の一覧表示(QuickFix), ジャンプ'})
+        vim.keymap.set('n', 'gd', function()
+            vim.lsp.buf.definition()
+        end, { buffer = true, desc = 'カーソル下の symbol の定義箇所へジャンプ' })
+        vim.keymap.set('n', 'gD', function()
+            vim.lsp.buf.declaration()
+        end, { buffer = true, desc = 'カーソル下の symbol の宣言箇所へジャンプ' })
+        vim.keymap.set('n', 'gi', function()
+            vim.lsp.buf.implementation()
+        end, { buffer = true, desc = 'カーソル下の symbol の実装箇所へジャンプ' })
+        vim.keymap.set('n', 'gt', function()
+            vim.lsp.buf.type_definition()
+        end, { buffer = true, desc = 'カーソル下の symbol の型定義箇所へジャンプ' })
+        vim.keymap.set('n', 'gn', function()
+            vim.lsp.buf.rename()
+        end, { buffer = true, desc = 'symbol の一括リネーム' })
+        vim.keymap.set('n', '<F2>', function()
+            vim.lsp.buf.rename()
+        end, { buffer = true, desc = 'symbol の一括リネーム' })
+        vim.keymap.set('n', 'ga', function()
+            vim.lsp.buf.code_action()
+        end, { buffer = true, desc = 'LSP のアクション選択' })
+        vim.keymap.set('n', 'ge', function()
+            vim.diagnostic.custom_open_float()
+        end, { buffer = true, desc = '警告・エラーメッセージの表示' })
         -- vim.keymap.set('n', 'g]', '<cmd>:lua vim.diagnostic.goto_next()<CR>')
-        vim.keymap.set('n', 'g]', '<cmd>:lua vim.diagnostic.custom_goto("next")<CR>')
+        vim.keymap.set('n', 'g]', function()
+            vim.diagnostic.custom_goto("next")
+        end, { buffer = true, desc = '次の診断箇所へ' })
         -- vim.keymap.set('n', 'g[', '<cmd>:lua vim.diagnostic.goto_prev()<CR>')
-        vim.keymap.set('n', 'g[', '<cmd>:lua vim.diagnostic.custom_goto("prev")<CR>')
-        vim.keymap.set('n', 'gl', '<cmd>:lua vim.diagnostic.setloclist()<CR>') -- diagnostics を location list に出す
+        vim.keymap.set('n', 'g[', function()
+            vim.diagnostic.custom_goto("prev")
+        end, { buffer = true, desc = '前の診断箇所へ' })
+        vim.keymap.set('n', 'gl', function()
+            vim.diagnostic.setloclist()
+        end, { buffer = true, desc = 'diagnostics を location list に出す' })
 
         vim.diagnostic.config({
             signs = true,
