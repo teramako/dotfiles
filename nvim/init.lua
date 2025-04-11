@@ -212,23 +212,6 @@ vim.diagnostic.config({
     severity_sort = true
 })
 
--- diagnostic のウィンドウ表示
--- border を使えたいので適当に関数を定義する
-vim.diagnostic.custom_open_float = function()
-    vim.diagnostic.open_float({ border = 'double' })
-    -- 透過したい場合は以下
-    -- local _, winnr = vim.diagnostic.open_float({ border = 'double' })
-    -- if winnr then
-    --     vim.api.nvim_set_option_value('winblend', 40, { win = winnr })
-    -- end
-end
-vim.diagnostic.custom_goto = function(name)
-    vim.diagnostic['goto_' .. name]({ float = true })
-    vim.schedule(function()
-        vim.diagnostic.custom_open_float()
-    end)
-end
-
 vim.api.nvim_create_autocmd("LspAttach", {
     desc = "Attach key mappings for LSP functionalities",
     callback = function()
@@ -268,11 +251,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end, { buffer = true, desc = '警告・エラーメッセージの表示' })
         -- vim.keymap.set('n', 'g]', '<cmd>:lua vim.diagnostic.goto_next()<CR>')
         vim.keymap.set('n', 'g]', function()
-            vim.diagnostic.custom_goto("next")
+            vim.diagnostic.jump({ count = 1, float = { border = 'double' } })
         end, { buffer = true, desc = '次の診断箇所へ' })
         -- vim.keymap.set('n', 'g[', '<cmd>:lua vim.diagnostic.goto_prev()<CR>')
         vim.keymap.set('n', 'g[', function()
-            vim.diagnostic.custom_goto("prev")
+            vim.diagnostic.jump({ count = -1, float = { border = 'double' } })
         end, { buffer = true, desc = '前の診断箇所へ' })
         vim.keymap.set('n', 'gl', function()
             vim.diagnostic.setloclist()
