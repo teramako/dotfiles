@@ -209,8 +209,8 @@ add({
 vim.api.nvim_create_autocmd("LspAttach", {
     desc = "Attach key mappings for LSP functionalities",
     callback = function()
-        vim.keymap.set('n', 'K',  '<cmd>:lua vim.lsp.buf.hover()<CR>') -- カーソル下のドキュメント等を表示
-        vim.keymap.set({ 'n', 'i' }, '<C-k>',  '<cmd>:lua vim.lsp.buf.signature_help()<CR>') -- シグニチャーヘルプ(関数の引数情報など)を表示
+        vim.keymap.set('n', 'K',  function() vim.lsp.buf.hover({ border = 'rounded' }) end) -- カーソル下のドキュメント等を表示
+        vim.keymap.set({ 'n', 'i' }, '<C-k>', function() vim.lsp.buf.signature_help({ border = 'rounded' }) end) -- シグニチャーヘルプ(関数の引数情報など)を表示
         -- vim.keymap.set('n', 'gf', '<cmd>:lua vim.lsp.buf.formatting()<CR>')
         vim.keymap.set('n', 'gr', '<cmd>:lua vim.lsp.buf.references()<CR>') -- カーソル下の symbol の参照箇所の一覧表示(QuickFix), ジャンプ
         vim.keymap.set('n', 'gd', '<cmd>:lua vim.lsp.buf.definition()<CR>') -- カーソル下の symbol の定義箇所へジャンプ
@@ -233,26 +233,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
             virtual_text = { severity = { min = "WARN" } },
             severity_sort = true
         })
-        -- vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-        --     vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false }
-        -- )
 
-        -- ウィンドウの透過をしたい場合は以下のようにすると良い
-        -- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-        --     function(...)
-        --         local _, winnr = vim.lsp.handlers.hover(...)
-        --         if winnr then
-        --             vim.api.nvim_set_option_value('winblend', 20, { win = winnr })
-        --         end
-        --     end,
-        --     { border = 'rounded' }
-        -- )
-        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-            vim.lsp.handlers.hover, { border = 'rounded' }
-        )
-        vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-            vim.lsp.handlers.signature_help, { border = 'single' }
-        )
         -- diagnostic のウィンドウ表示
         -- border を使えたいので適当に関数を定義する
         vim.diagnostic.custom_open_float = function()
