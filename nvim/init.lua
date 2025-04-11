@@ -206,6 +206,29 @@ add({
     },
 })
 
+vim.diagnostic.config({
+    signs = true,
+    virtual_text = { severity = { min = "WARN" } },
+    severity_sort = true
+})
+
+-- diagnostic のウィンドウ表示
+-- border を使えたいので適当に関数を定義する
+vim.diagnostic.custom_open_float = function()
+    vim.diagnostic.open_float({ border = 'double' })
+    -- 透過したい場合は以下
+    -- local _, winnr = vim.diagnostic.open_float({ border = 'double' })
+    -- if winnr then
+    --     vim.api.nvim_set_option_value('winblend', 40, { win = winnr })
+    -- end
+end
+vim.diagnostic.custom_goto = function(name)
+    vim.diagnostic['goto_' .. name]({ float = true })
+    vim.schedule(function()
+        vim.diagnostic.custom_open_float()
+    end)
+end
+
 vim.api.nvim_create_autocmd("LspAttach", {
     desc = "Attach key mappings for LSP functionalities",
     callback = function()
@@ -254,29 +277,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.keymap.set('n', 'gl', function()
             vim.diagnostic.setloclist()
         end, { buffer = true, desc = 'diagnostics を location list に出す' })
-
-        vim.diagnostic.config({
-            signs = true,
-            virtual_text = { severity = { min = "WARN" } },
-            severity_sort = true
-        })
-
-        -- diagnostic のウィンドウ表示
-        -- border を使えたいので適当に関数を定義する
-        vim.diagnostic.custom_open_float = function()
-            vim.diagnostic.open_float({ border = 'double' })
-            -- 透過したい場合は以下
-            -- local _, winnr = vim.diagnostic.open_float({ border = 'double' })
-            -- if winnr then
-            --     vim.api.nvim_set_option_value('winblend', 40, { win = winnr })
-            -- end
-        end
-        vim.diagnostic.custom_goto = function(name)
-            vim.diagnostic['goto_' .. name]({ float = true })
-            vim.schedule(function()
-                vim.diagnostic.custom_open_float()
-            end)
-        end
     end
 })
 
