@@ -209,7 +209,9 @@ add({
 vim.diagnostic.config({
     signs = true,
     virtual_text = { severity = { min = "WARN" } },
-    severity_sort = true
+    severity_sort = true,
+    float = { border = 'double', severity_sort = true },
+    jump = { float = true }
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -251,11 +253,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end, { buffer = true, desc = '警告・エラーメッセージの表示' })
         -- vim.keymap.set('n', 'g]', '<cmd>:lua vim.diagnostic.goto_next()<CR>')
         vim.keymap.set('n', 'g]', function()
-            vim.diagnostic.jump({ count = 1, float = { border = 'double' } })
+            vim.diagnostic.jump({ count = 1 })
         end, { buffer = true, desc = '次の診断箇所へ' })
         -- vim.keymap.set('n', 'g[', '<cmd>:lua vim.diagnostic.goto_prev()<CR>')
         vim.keymap.set('n', 'g[', function()
-            vim.diagnostic.jump({ count = -1, float = { border = 'double' } })
+            vim.diagnostic.jump({ count = -1 })
         end, { buffer = true, desc = '前の診断箇所へ' })
         vim.keymap.set('n', 'gl', function()
             vim.diagnostic.setloclist()
