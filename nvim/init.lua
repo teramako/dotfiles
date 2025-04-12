@@ -249,7 +249,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
             vim.lsp.buf.code_action()
         end, { buffer = true, desc = 'LSP のアクション選択' })
         vim.keymap.set('n', 'ge', function()
-            vim.diagnostic.custom_open_float()
+            vim.diagnostic.open_float({ border = 'double' })
         end, { buffer = true, desc = '警告・エラーメッセージの表示' })
         -- vim.keymap.set('n', 'g]', '<cmd>:lua vim.diagnostic.goto_next()<CR>')
         vim.keymap.set('n', 'g]', function()
