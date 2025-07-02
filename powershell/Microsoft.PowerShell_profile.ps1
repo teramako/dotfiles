@@ -21,6 +21,7 @@ function Set-PoshTheme {
         })]
         [string] $Name
     )
+    $env:POSH_THEME_NAME = $Name
     $themeFile = Join-Path $env:POSH_THEMES_PATH ("{0}.omp.json" -F $Name)
     & $posh init pwsh --config "$themeFile" | Invoke-Expression
 }
