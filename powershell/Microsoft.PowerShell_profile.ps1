@@ -11,6 +11,22 @@ if ($IsWindows) {
     $posh = "${global:POSH_DIR}/bin/oh-my-posh"
     $env:POSH_THEMES_PATH = "$POSH_DIR/themes"
 }
+function Reset-Prompt {
+    $function:Prompt = {
+        $private:lastExitStatus = $?
+        $sep = [System.IO.Path]::DirectorySeparatorChar
+        $location = $executionContext.SessionState.Path.CurrentLocation.Path -replace "^$env:HOME(?=[$sep]?)",'~'
+        $paths = $location.Split($sep)
+        if ($paths.Length -gt 4) {
+            $location = "$($paths[0,1] -join $sep)$sep...$sep$($paths[-2,-1] -join $sep)"
+        }
+        return 'PS ' +
+               $PSStyle.Foreground.Cyan + $location + $PSStyle.Reset +
+               $(if ($private:lastExitStatus) { $PSStyle.Foreground.Green } else { $PSStyle.Foreground.Red }) +
+               ('>' * ($NestedPromptLevel + 1)) + $PSStyle.Reset +
+               ' '
+    }
+}
 function Set-PoshTheme {
     param(
         [Parameter(Mandatory, Position = 0)]
