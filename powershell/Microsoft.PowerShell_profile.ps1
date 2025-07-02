@@ -7,7 +7,7 @@ if ($IsWindows) {
     $posh = "${global:POSH_DIR}\bin\oh-my-posh.exe"
     $env:POSH_THEMES_PATH = "$POSH_DIR\themes"
 } elseif ($IsLinux) {
-    $global:POSH_DIR = "$env:HOMEBREW_PREFIX/Cellar/oh-my-posh/23.6.2"
+    $global:POSH_DIR = (Get-ChildItem "$env:HOMEBREW_PREFIX/Cellar/oh-my-posh" | Select-Object -First 1).FullName
     $posh = "${global:POSH_DIR}/bin/oh-my-posh"
     $env:POSH_THEMES_PATH = "$POSH_DIR/themes"
 }
