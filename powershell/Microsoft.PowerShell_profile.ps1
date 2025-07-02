@@ -69,3 +69,6 @@ Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock {
 # Install-Module -Name posh-git -Repository PSGallery
 Import-Module posh-git
 
+if (Test-Path -Path $PSScriptRoot/primary.formats.ps1xml) {
+    Update-FormatData -PrependPath $PSScriptRoot/primary.formats.ps1xml
+}
