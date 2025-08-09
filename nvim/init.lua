@@ -126,7 +126,7 @@ later(function()
     require('lualine').setup({
         options = {
             icons_enabled = false,
-            theme = 'dracula',
+            theme = 'dracula-nvim',
             section_separators = { left = '', right = '' },
             component_separators = { left = '', right = '' },
         },
@@ -145,34 +145,8 @@ later(function()
             lualine_b = {
                 { 'filename', file_status = false }
             },
-            lualine_c = {
-                {
-                    'buffers',
-                    mode = 4,
-                    use_mode_colors = false,
-                    filetype_names = {
-                        TelescopePrompt = '🔎 Telescope',
-                        ['gin-status'] = ' GitStatus',
-                        ['gin-log'] = ' GitLog',
-                        ['gin-branch'] = ' GitBranch',
-                        ['gin-diff'] = ' GitDiff',
-                    },
-                }
-            },
-            lualine_x = {},
-            lualine_y = {},
-            lualine_z = {},
         },
-        winbar = {
-            -- lualine_a = {'windows'},
-            -- lualine_b = {},
-            -- lualine_c = {},
-            -- lualine_x = {},
-            -- lualine_y = {},
-            -- lualine_z = {}
-        }
     })
-    vim.api.nvim_set_hl(0, 'lualine_c_buffers_active', { ctermfg=255, ctermbg=238, underline = true })
 end)
 -- }}}
 
