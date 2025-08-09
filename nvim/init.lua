@@ -180,6 +180,7 @@ vim.lsp.enable({
     'omnisharp',
     'lemminx',
 })
+vim.lsp.set_log_level('ERROR')
 
 vim.diagnostic.config({
     signs = true,
