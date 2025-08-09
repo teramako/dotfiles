@@ -175,6 +175,11 @@ add({
         'williamboman/mason-lspconfig.nvim'
     },
 })
+vim.lsp.enable({
+    'lua_ls',
+    'omnisharp',
+    'lemminx',
+})
 
 vim.diagnostic.config({
     signs = true,
@@ -236,125 +241,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 
-now(function()
+later(function()
     require("mason").setup()
-    local mason_lspconfig = require("mason-lspconfig")
-    mason_lspconfig.setup({
+    require("mason-lspconfig").setup({
         ensure_installed = {
-            'lua_ls'
+            'lua_ls',
         }
-    })
-    local lspconfig = require('lspconfig')
-    mason_lspconfig.setup_handlers({
-        function(server_name)
-            lspconfig[server_name].setup({})
-        end,
-        ['lua_ls'] = function()
-            -- see: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#lua_ls
-            require('lspconfig').lua_ls.setup({
-                on_init = function(client)
-                    local path = client.workspace_folders[1].name
-                    if vim.loop.fs_stat(path..'.luarc.json') or vim.loop.fs_stat(path..'.luarc.json') then
-                        return
-                    end
-                    client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-                        workspace = {
-                            library = {
-                                vim.env.VIMRUNTIME .. '/lua',
-                                vim.fn.stdpath('config') .. '/lua',
-                                mini_path .. '/lua',
-                                path_package .. '/pack/deps/opt/nvim-cmp/lua',
-                            }
-                        }
-                    })
-                end,
-                settings = {
-                    Lua = {
-                        runtime = { version = 'LuaJIT', pathStrict = true, path = { '?.lua', '?/init.lua' }, },
-                        workspace = {
-                            checkThirdParty = false,
-                            ignoreDir = { '/locale/', '/libs/', '/3rd', '.vscode', '/meta', '_plugins' }
-                        },
-                        diagnostics = {
-                            disable = { 'missing-fields', 'incomplete-signature-doc' },
-                            unusedLocaleExclude = { '_*' }
-                        },
-                    }
-                }
-            })
-        end,
-        ['omnisharp'] = function()
-            local util = require('lspconfig.util');
-            require('lspconfig').omnisharp.setup({
-                cmd = { "/usr/bin/dotnet", vim.fn.stdpath("data") .. "/mason/packages/omnisharp/libexec/OmniSharp.dll" },
-                settings = {
-                    FormattingOptions = {
-                        -- Enables support for reading code style, naming convention and analyzer
-                        -- settings from .editorconfig.
-                        EnableEditorConfigSupport = true,
-                        -- Specifies whether 'using' directives should be grouped and sorted during
-                        -- document formatting.
-                        OrganizeImports = nil,
-                    },
-                    MsBuild = {
-                        -- If true, MSBuild project system will only load projects for files that
-                        -- were opened in the editor. This setting is useful for big C# codebases
-                        -- and allows for faster initialization of code navigation features only
-                        -- for projects that are relevant to code that is being edited. With this
-                        -- setting enabled OmniSharp may load fewer projects and may thus display
-                        -- incomplete reference lists for symbols.
-                        LoadProjectsOnDemand = nil,
-                    },
-                    RoslynExtensionsOptions = {
-                        -- Enables support for roslyn analyzers, code fixes and rulesets.
-                        EnableAnalyzersSupport = true,
-                        -- Enables support for showing unimported types and unimported extension
-                        -- methods in completion lists. When committed, the appropriate using
-                        -- directive will be added at the top of the current file. This option can
-                        -- have a negative impact on initial completion responsiveness,
-                        -- particularly for the first few completion sessions after opening a
-                        -- solution.
-                        EnableImportCompletion = nil,
-                        -- Only run analyzers against open files when 'enableRoslynAnalyzers' is
-                        -- true
-                        AnalyzeOpenDocumentsOnly = nil,
-                    },
-                    Sdk = {
-                        -- Specifies whether to include preview versions of the .NET SDK when
-                        -- determining which version to use for project loading.
-                        IncludePrereleases = false,
-                    },
-                },
-                filetypes = { 'cs' },
-                root_dir = util.root_pattern('*.sln', '*.csproj', 'omnisharp.json'),
-            })
-        end,
-        -- XML 系のLSP
-        --  * https://github.com/eclipse/lemminx
-        --  * https://github.com/redhat-developer/vscode-xml/blob/main/docs/Preferences.md
-        ['lemminx'] = function()
-            local lemminx = require('lspconfig').lemminx
-            lemminx.setup({
-                filetypes = vim.list_extend({ 'ps1xml' }, lemminx.document_config.default_config.filetypes),
-                settings = {
-                    xml = {
-                        server = {
-                            workDir = '~/.cache/lemminx',
-                        },
-                        fileAssociations = {
-                            {
-                                pattern = '**/*formats.ps1xml',
-                                systemId = 'https://raw.githubusercontent.com/PowerShell/PowerShell/master/src/Schemas/Format.xsd'
-                            },
-                            {
-                                pattern = '**/*types.ps1xml',
-                                systemId = 'https://raw.githubusercontent.com/PowerShell/PowerShell/master/src/Schemas/Types.xsd'
-                            },
-                        }
-                    }
-                },
-            })
-        end,
     })
 end)
 -- }}}
@@ -466,6 +358,9 @@ later(function()
             'onsails/lspkind.nvim',
             'teramako/cmp-cmdline-prompt.nvim',
         }
+    })
+    vim.lsp.config('*', {
+        capabilities = require('cmp_nvim_lsp').default_capabilities(),
     })
     local cmp = require('cmp')
     local lspkind = require('lspkind')
