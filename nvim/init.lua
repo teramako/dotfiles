@@ -121,10 +121,6 @@ end)
 add({
     -- see: https://github.com/nvim-lualine/lualine.nvim
     source = 'nvim-lualine/lualine.nvim',
-    -- アイコン要らない
-    -- depends = {
-    --     'nvim-tree/nvim-web-devicons'
-    -- }
 })
 later(function()
     require('lualine').setup({
