@@ -294,6 +294,8 @@ later(function()
     vim.keymap.set('n', '<C-g>a', '<cmd>Gitsign stage_hunk<CR>')
     vim.keymap.set('x', '<C-g>a', ':\'<,\'>Gitsign stage_hunk<CR>')
     vim.keymap.set('n', '<C-g>r', '<cmd>Gitsign reset_base<CR>')
+    vim.keymap.set('n', '<C-g>b', '<cmd>Gitsign blame_line<CR>')
+    vim.keymap.set('n', '<C-g><C-b>', '<cmd>Gitsign blame<CR>')
 
 end)
 later(function()
