@@ -295,7 +295,13 @@ later(function()
     vim.keymap.set('x', '<C-g>a', ':\'<,\'>Gitsign stage_hunk<CR>')
     vim.keymap.set('n', '<C-g>r', '<cmd>Gitsign reset_base<CR>')
     vim.keymap.set('n', '<C-g>b', '<cmd>Gitsign blame_line<CR>')
-    vim.keymap.set('n', '<C-g><C-b>', '<cmd>Gitsign blame<CR>')
+    vim.keymap.set('n', '<C-g><C-b>', function ()
+        if vim.bo.filetype == 'gitsigns-blame' then
+            vim.api.nvim_buf_delete(0, {});
+        else
+            vim.cmd([[Gitsign blame]])
+        end
+    end)
 
 end)
 later(function()
