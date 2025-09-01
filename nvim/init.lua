@@ -44,6 +44,7 @@ opt.expandtab = true
 opt.backup = false
 opt.swapfile = false
 opt.visualbell = true
+opt.winborder  = 'single'
 
 opt.listchars = 'tab:>-,trail:-,nbsp:+,eol:$'
 opt.cmdheight = 1
