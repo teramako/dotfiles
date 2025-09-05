@@ -60,6 +60,7 @@ opt.grepprg    = 'git grep --no-index --exclude-standard --no-color -n --column 
 -- Clipbload
 vim.keymap.set({'n', 'v'}, 'gy', '"+y', { noremap = true }) -- クリップボードへコピー
 vim.keymap.set({'n', 'v'}, 'gp', '"+p', { noremap = true }) -- クリップボードからペースト
+vim.keymap.set({'n', 'v'}, 'gP', '"+P', { noremap = true }) -- クリップボードからペースト
 
 -- Tab
 vim.keymap.set('n', '<C-l>', 'gt', { noremap = true })
