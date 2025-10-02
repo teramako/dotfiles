@@ -355,6 +355,33 @@ end)
 -- }}}
 
 -- Auto Completion {{{
+-- Copilot {{{
+later(function()
+    add({
+        source = 'zbirenbaum/copilot-cmp',
+        depends = {
+            'zbirenbaum/copilot.lua',
+        }
+    })
+    require('copilot').setup({
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+        copilot_node_command = 'node',
+        filetypes = {
+            yaml = true,
+            markdown = true,
+            help = false,
+            gitcommit = true,
+            gitrebase = true,
+            hgcommit = false,
+            svn = false,
+            cvs = false,
+            ['.'] = false,
+        },
+    })
+    require('copilot_cmp').setup()
+end)
+-- }}}
 -- nvim-cmp {{{
 later(function()
     add({
@@ -381,6 +408,7 @@ later(function()
             { name = 'nvim_lsp' },
             { name = 'nvim_lsp_signature_help' },
             -- { name = 'buffer' },
+            { name = 'copilot' },
             { name = 'path' },
         },
         mapping = cmp.mapping.preset.insert({
@@ -418,6 +446,7 @@ later(function()
     cmp.setup.filetype({ 'markdown', 'gitcommit' }, {
         sources = {
             { name = 'emoji' },
+            { name = 'copilot' },
             { name = 'buffer' },
         }
     })
@@ -486,6 +515,7 @@ later(function()
             },
         },
     })
+    vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg ="#6CC644" })
     -- gray
     vim.api.nvim_set_hl(0, 'CmpItemAbbrDeprecated', { bg='NONE', strikethrough=true, fg='#808080' })
     -- blue
