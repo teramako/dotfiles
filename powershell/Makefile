@@ -3,7 +3,8 @@ XDG_CONFIG_HOME ?= $(HOME)/.config
 
 SOURCE_FILES := \
 	$(wildcard *.ps1) \
-	$(wildcard *.ps1xml)
+	$(wildcard *.ps1xml) \
+	$(wildcard completions/*.ps1)
 
 TARGET_FILES := $(addprefix $(XDG_CONFIG_HOME)/powershell/,$(SOURCE_FILES))
 

@@ -60,30 +60,14 @@ Set-PsReadLineKeyhandler -Chord Alt+Backspace -Function UnixWordRubout
 # Settings: Set-PSReadLineOption -PredctionSource HistoryAndPlugin -PredictionViewStyle ListView
 Import-Module CompletionPredictor
 
-## winget completion
-if ($IsWindows) {
-    Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
-        param($wordToComplete, $commandAst, $cursorPosition)
-        [Console]::InputEncoding = [Console]::OutputEncoding = $OutputEncoding = [System.Text.Utf8Encoding]::new()
-        $Local:word = $wordToComplete.Replace('"', '""')
-        $Local:ast = $commandAst.ToString().Replace('"', '""')
-        winget complete --word="$Local:word" --commandline "$Local:ast" --position $cursorPosition | ForEach-Object {
-            [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
-        }
-    }
-}
+# Native(OS) Command Completer
+# https://github.com/teramako/NativeCommandCompleter.psm
+Import-Module NativeCommandCompleter.psm
+Import-Module NativeCommandCompleter.completions
 
-## dotnet completion
-Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock {
-    param($wordToComplete, $commandAst, $cursorPosition)
-    dotnet complete --position $cursorPosition "$commandAst" | ForEach-Object {
-        [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
-    }
+Set-PSReadLineOption -Colors @{
+    Selection = $PSStyle.Reverse;
 }
-
-# git completion
-# Install-Module -Name posh-git -Repository PSGallery
-Import-Module posh-git
 
 if (Test-Path -Path $PSScriptRoot/primary.formats.ps1xml) {
     Update-FormatData -PrependPath $PSScriptRoot/primary.formats.ps1xml
