@@ -182,14 +182,18 @@ vim.lsp.enable({
     'omnisharp',
     'lemminx',
 })
-vim.lsp.set_log_level('ERROR')
+vim.lsp.log.set_level(vim.log.levels.ERROR)
 
 vim.diagnostic.config({
     signs = true,
-    virtual_text = { severity = { min = "WARN" } },
+    virtual_text = { severity = { min = vim.diagnostic.severity.WARN } },
     severity_sort = true,
     float = { border = 'double', severity_sort = true },
-    jump = { float = true }
+    jump = {
+        on_jump = function ()
+            vim.diagnostic.open_float({ scope = 'cursor', focus = false })
+        end
+    }
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
