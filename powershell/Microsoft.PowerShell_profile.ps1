@@ -6,6 +6,7 @@ if ($IsWindows) {
     $global:POSH_DIR = "D:\Program\oh-my-posh"
     $posh = "${global:POSH_DIR}\bin\oh-my-posh.exe"
     $env:POSH_THEMES_PATH = "$POSH_DIR\themes"
+    Set-Alias edit $env:LOCALAPPDATA\Microsoft\WinGet\Links\edit.exe
 } elseif ($IsLinux) {
     $global:POSH_DIR = (Get-ChildItem "$env:HOMEBREW_PREFIX/Cellar/oh-my-posh" | Select-Object -First 1).FullName
     $posh = "${global:POSH_DIR}/bin/oh-my-posh"
